@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - ผู้ที่มีส่วนเกี่ยวข้อง</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Crimson+Text:wght@400;600&family=Creepster&family=Mystery+Quest&display=swap');
+        body {
+            background: linear-gradient(135deg, #1a0000 0%, #2c0000 25%, #1a1a1a 50%, #2d1414 75%, #0f0f0f 100%);
+            font-family: 'Crimson Text', 'Mystery Quest', cursive, serif;
+            color: #e8e8e8;
+            min-height: 100vh;
+        }
+        .navbar {
+            background: rgba(20, 20, 20, 0.98) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid #8b0000;
+            box-shadow: 0 2px 20px rgba(139, 0, 0, 0.5);
+        }
+        .navbar-brand img {
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
+        }
+        .nav-link {
+            color: #d4af37 !important;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 2rem;
+            padding: 0.75rem 2.5rem;
+            border-radius: 0.7rem;
+        }
+        .nav-link:hover {
+            color: #fff !important;
+            text-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
+        }
+        .nav-link.active {
+            color: #fff !important;
+            text-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #d4af37, #ffd700);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .form-control {
+            background: rgba(40, 40, 40, 0.8);
+            border: 1px solid #8b0000;
+            color: #e8e8e8;
+        }
+        .form-control:focus {
+            background: rgba(40, 40, 40, 0.9);
+            border-color: #d4af37;
+            color: #fff;
+            box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
+        }
+        .btn-outline-success {
+            border-color: #d4af37;
+            color: #d4af37;
+            transition: all 0.3s ease;
+            font-size: 1.5rem;
+            padding: 0.75rem 2.5rem;
+            border-width: 3px;
+            border-radius: 0.7rem;
+        }
+        .btn-outline-success:hover {
+            background: #d4af37;
+            color: #000;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+        .welcome-text {
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(45deg, #d4af37, #ffd700, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+            position: relative;
+        }
+        .welcome-text::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+        }
+        .welcome-text::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+        }
+        .navbar-toggler {
+            border-color: #d4af37;
+        }
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23d4af37' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+        .case-file {
+            background: linear-gradient(145deg, rgba(39, 39, 39, 0.97), rgba(20, 20, 20, 0.97));
+            border: 3px solid #8b0000;
+            border-radius: 25px;
+            box-shadow: 0 0 80px rgba(139, 0, 0, 0.5), 0 0 150px rgba(192, 57, 43, 0.2);
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+        .mafia-symbol {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3.5em;
+            color: #c0392b;
+            text-shadow: 0 0 30px rgba(192, 57, 43, 0.8);
+            animation: symbolGlow 3s ease-in-out infinite;
+        }
+        @keyframes symbolGlow {
+            0%, 100% {
+                transform: translateX(-50%) scale(1);
+                text-shadow: 0 0 30px rgba(192, 57, 43, 0.8);
+            }
+            50% {
+                transform: translateX(-50%) scale(1.15);
+                text-shadow: 0 0 40px rgba(192, 57, 43, 1), 0 0 60px rgba(139, 0, 0, 0.6);
+            }
+        }
+        h1 {
+            color: #ffd700;
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            text-shadow: 4px 4px 0px #8b0000, 0 0 40px rgba(192, 57, 43, 0.8), 0 0 60px rgba(139, 0, 0, 0.4);
+            font-family: 'Creepster', 'Playfair Display', cursive, serif;
+            margin-top: 25px;
+            letter-spacing: 2px;
+        }
+        .danger-banner {
+            background: linear-gradient(45deg, #8b0000 0%, #a52a2a 50%, #dc143c 100%);
+            color: #fff;
+            padding: 12px 25px;
+            margin: 25px auto;
+            width: fit-content;
+            border-radius: 25px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.6), inset 0 2px 0 rgba(255,255,255,0.2);
+            animation: dangerPulse 2s ease-in-out infinite;
+            border: 2px solid #8b0000;
+        }
+        @keyframes dangerPulse {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(139, 0, 0, 0.6), inset 0 2px 0 rgba(255,255,255,0.2);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 35px rgba(139, 0, 0, 0.9), 0 0 50px rgba(139, 0, 0, 0.4), inset 0 2px 0 rgba(255,255,255,0.3);
+                transform: scale(1.02);
+            }
+        }
+        .suspects-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 35px;
+            margin: 50px 0;
+            padding: 20px;
+        }
+        .suspect-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.6), 0 0 25px rgba(192, 57, 43, 0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(145deg, rgba(60, 60, 60, 0.9), rgba(30, 30, 30, 0.9));
+            border: 2px solid #8b0000;
+            cursor: pointer;
+            transform-style: preserve-3d;
+        }
+        .suspect-card:hover {
+            transform: translateY(-8px) rotateX(5deg) rotateY(5deg) scale(1.03);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 40px rgba(192, 57, 43, 0.6), 0 0 60px rgba(139, 0, 0, 0.3);
+            border-color: #c0392b;
+        }
+        .suspect-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 0%, rgba(192, 57, 43, 0.1) 50%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .suspect-card:hover::before {
+            opacity: 1;
+        }
+        .suspect-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #2c2c2c, #404040);
+            border-bottom: 3px solid #8b0000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            color: #666;
+            position: relative;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .suspect-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: sepia(20%) contrast(1.1) brightness(0.9);
+            transition: filter 0.3s ease;
+        }
+        .suspect-card:hover .suspect-image img {
+            filter: sepia(5%) contrast(1.3) brightness(1.1);
+        }
+        .suspect-image::after {
+            content: 'คลิกเพื่อดูรายละเอียด';
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.3em;
+            color: #c0392b;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            background: rgba(0,0,0,0.8);
+            padding: 5px 10px;
+            border-radius: 15px;
+            white-space: nowrap;
+        }
+        .suspect-card:hover .suspect-image::after {
+            opacity: 1;
+        }
+        .suspect-info {
+            padding: 25px 20px;
+            background: linear-gradient(to bottom, rgba(40, 40, 40, 0.9), rgba(20, 20, 20, 0.9));
+        }
+        .suspect-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            font-family: 'Mystery Quest', 'Playfair Display', cursive, serif;
+        }
+        .suspect-role {
+            color: #bbb;
+            font-size: 0.95em;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+        .danger-level {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .danger-high {
+            background: linear-gradient(45deg, #8b0000, #dc143c);
+            color: white;
+            box-shadow: 0 0 15px rgba(139, 0, 0, 0.5);
+        }
+        .danger-medium {
+            background: linear-gradient(45deg, #ff8c00, #ffa500);
+            color: white;
+            box-shadow: 0 0 15px rgba(255, 140, 0, 0.5);
+        }
+        .danger-low {
+            background: linear-gradient(45deg, #228b22, #32cd32);
+            color: white;
+            box-shadow: 0 0 15px rgba(34, 139, 34, 0.5);
+        }
+        .final-report {
+            background: linear-gradient(145deg, rgba(60, 60, 60, 0.2), rgba(30, 30, 30, 0.2));
+            border: 2px solid #8b0000;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: left;
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #ffd700;
+            backdrop-filter: blur(5px);
+            font-family: 'Crimson Text', 'Mystery Quest', cursive, serif;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'AS' %}">
+                <img src="{% static 'images/Tusita.png' %}" style="height:40px; width:auto;">
+                <span class="ms-3 fs-1 fw-bold welcome-text">ยินดีต้อนรับ</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index' %}">หน้าหลัก</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'about' %}">เกี่ยวกับเรา</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'gallery' %}">อัลบั้มรูป</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div class="container my-5">
+        <div class="case-file shadow-lg rounded-4 p-5 position-relative" style="background: rgba(30,30,40,0.97); border: 2px solid #d4af37; max-width: 1000px; margin: 40px auto 0 auto;">
+            <div class="mafia-symbol text-center" style="font-size:3.5em; color:#c0392b; text-shadow:0 0 30px rgba(192,57,43,0.8);">🎭</div>
+            <h1 class="text-center mb-3" style="font-family: 'Playfair Display', serif; color:#ffd700;">🕴️ ผู้ที่มีส่วนเกี่ยวข้อง</h1>
+            <div class="danger-banner text-center mb-4" style="background: linear-gradient(45deg, #8b0000 0%, #a52a2a 50%, #dc143c 100%); color: #fff; padding: 12px 25px; border-radius: 25px; font-weight: bold; letter-spacing: 3px; border: 2px solid #8b0000;">⚠️ DANGEROUS SUSPECTS ⚠️</div>
+            <div class="suspects-gallery">
+                <!-- ...existing suspect cards... -->
+                <div class="suspect-card" onclick="window.open('https://web.facebook.com/tusita.shindai', '_blank')">
+                    <div class="suspect-image">
+                        <img src="https://i.postimg.cc/B6SV19h5/455698611-1598174560747358-2403844972973550863-n.jpg" alt="บุคคลที่ 1">
+                    </div>
+                    <div class="suspect-info">
+                        <div class="suspect-name">Tusita Shindai</div>
+                        <div class="suspect-role">หัวหน้าองค์กร<br>ผู้วางแผนหลัก</div>
+                        <span class="danger-level danger-high">อันตรายสูง</span>
+                    </div>
+                </div>
+                <div class="suspect-card" onclick="window.open('https://web.facebook.com/tamago.shindai', '_blank')">
+                    <div class="suspect-image">
+                        <img src="https://i.postimg.cc/2jHPhyN1/4e6f4ceb-3f3d-4d01-9d6c-c204d03bf8a1.jpg" alt="บุคคลที่ 2">
+                    </div>
+                    <div class="suspect-info">
+                        <div class="suspect-name">Tamago Shindai</div>
+                        <div class="suspect-role">ผู้ช่วยคนสำคัญ<br>ผู้ดำเนินการ</div>
+                        <span class="danger-level danger-high">อันตรายสูง</span>
+                    </div>
+                </div>
+                <div class="suspect-card" onclick="window.open('https://web.facebook.com/fouto2314', '_blank')">
+                    <div class="suspect-image">
+                        <img src="https://i.postimg.cc/0Nwwdb4P/2fb8cc86-f563-40c4-898f-b652dbeb6975.jpg" alt="บุคคลที่ 3">
+                    </div>
+                    <div class="suspect-info">
+                        <div class="suspect-name">Makota Shindai</div>
+                        <div class="suspect-role">ผู้ให้ข้อมูล<br>คนใน</div>
+                        <span class="danger-level danger-medium">อันตรายปานกลาง</span>
+                    </div>
+                </div>
+                <div class="suspect-card" onclick="alert('⚠️ ไม่สามารถเข้าถึงข้อมูลได้\n\n🔒 ข้อมูลถูกปิดปกปิดหรือลบออกจากระบบแล้ว\n🕵️ กรุณาติดต่อหน่วยสืบสวนเพื่อขอข้อมูลเพิ่มเติม')">
+                    <div class="suspect-image">
+                        <img src="https://i.postimg.cc/sg8WhpwT/789854a2-2a3b-4c5c-aec5-b25a66d22242.jpg" alt="บุคคลที่ 4">
+                    </div>
+                    <div class="suspect-info">
+                        <div class="suspect-name">Tosi Shindai</div>
+                        <div class="suspect-role">คนขับรถหลบหนี<br>ผู้สนับสนุน</div>
+                        <span class="danger-level danger-medium">อันตรายปานกลาง</span>
+                    </div>
+                </div>
+                <div class="suspect-card" onclick="alert('⚠️ ไม่สามารถเข้าถึงข้อมูลได้\n\n🔒 ข้อมูลถูกปิดปกปิดหรือลบออกจากระบบแล้ว\n🕵️ กรุณาติดต่อหน่วยสืบสวนเพื่อขอข้อมูลเพิ่มเติม')">
+                    <div class="suspect-image">
+                        <img src="https://i.postimg.cc/dQBTBM5k/92bcf475-152b-41f1-b5d1-abe5c6cfdfa7.jpg" alt="บุคคลที่ 5">
+                    </div>
+                    <div class="suspect-info">
+                        <div class="suspect-name">Kira Shindai</div>
+                        <div class="suspect-role">ผู้จัดการเงิน<br>ผู้ฟอกเงิน</div>
+                        <span class="danger-level danger-low">อันตรายต่ำ</span>
+                    </div>
+                </div>
+                <div class="suspect-card" onclick="alert('⚠️ ไม่สามารถเข้าถึงข้อมูลได้\n\n🔒 ข้อมูลถูกปิดปกปิดหรือลบออกจากระบบแล้ว\n🕵️ กรุณาติดต่อหน่วยสืบสวนเพื่อขอข้อมูลเพิ่มเติม')">
+                    <div class="suspect-image">
+                        <img src="https://i.postimg.cc/DwWJnSnL/5d8ab0c7-13e4-43fc-a8c9-6194c4667d6a.jpg" alt="บุคคลที่ 6">
+                    </div>
+                    <div class="suspect-info">
+                        <div class="suspect-name">Takayaka Shindai</div>
+                        <div class="suspect-role">ผู้ติดต่อสื่อสาร<br>เครือข่าย</div>
+                        <span class="danger-level danger-low">อันตรายต่ำ</span>
+                    </div>
+                </div>
+            </div>
+            <div class="final-report mt-4" style="background: linear-gradient(145deg, rgba(60, 60, 60, 0.2), rgba(30, 30, 30, 0.2)); border: 2px solid #8b0000; border-radius: 15px; padding: 30px; text-align: left; font-size: 1.1em; line-height: 1.8; color: #ddd; backdrop-filter: blur(5px);">
+                <strong>📋 รายงานสรุปการสืบสวน:</strong><br><br>
+                จากการติดตามและสืบสวนเครือข่ายมาเฟียครั้งนี้ พบว่ามีผู้ที่เกี่ยวข้องทั้งหมด 6 คน โดยแต่ละคนมีบทบาทที่แตกต่างกันในองค์กร ตั้งแต่ผู้นำ ผู้ปฏิบัติการ ไปจนถึงผู้สนับสนุน<br><br>
+                <strong>🎯 ผลการดำเนินการ:</strong> การสืบสวนยังคงดำเนินต่อไป เนื่องจากเครือข่ายมีความซับซ้อนและมีการปกปิดหลักฐานอย่างชาญฉลาด ต้องใช้เวลาในการรวบรวมหลักฐานเพิ่มเติมเพื่อดำเนินคดี
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

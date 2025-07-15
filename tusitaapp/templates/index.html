@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tusita - ประวัติคดีปริศนา</title>
+        {% load static %}
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Crimson+Text:wght@400;600&display=swap');
+            body {
+                background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+                font-family: 'Crimson Text', serif;
+                color: #e8e8e8;
+                min-height: 100vh;
+            }
+            .navbar {
+                background: rgba(20, 20, 20, 0.95) !important;
+                backdrop-filter: blur(10px);
+                border-bottom: 1px solid #333;
+                box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+            }
+            .navbar-brand img {
+                filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.3));
+            }
+            .nav-link {
+                color: #d4af37 !important;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                position: relative;
+                font-size: 2rem;
+                padding: 0.75rem 2.5rem;
+                border-radius: 0.7rem;
+            }
+            .nav-link:hover {
+                color: #fff !important;
+                text-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
+            }
+            .nav-link.active {
+                color: #fff !important;
+                text-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
+            }
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                bottom: -5px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: linear-gradient(90deg, #d4af37, #ffd700);
+                transition: width 0.3s ease;
+            }
+            .nav-link:hover::after {
+                width: 100%;
+            }
+            .form-control {
+                background: rgba(40, 40, 40, 0.8);
+                border: 1px solid #555;
+                color: #e8e8e8;
+            }
+            .form-control:focus {
+                background: rgba(40, 40, 40, 0.9);
+                border-color: #d4af37;
+                color: #fff;
+                box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
+            }
+            .btn-outline-success {
+                border-color: #d4af37;
+                color: #d4af37;
+                transition: all 0.3s ease;
+                font-size: 1.5rem;
+                padding: 0.75rem 2.5rem;
+                border-width: 3px;
+                border-radius: 0.7rem;
+            }
+            .btn-outline-success:hover {
+                background: #d4af37;
+                color: #000;
+                box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            }
+            .welcome-text {
+                font-family: 'Playfair Display', serif;
+                background: linear-gradient(45deg, #d4af37, #ffd700, #d4af37);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+                position: relative;
+            }
+            .welcome-text::before {
+                content: '';
+                position: absolute;
+                top: -10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100px;
+                height: 2px;
+                background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            }
+            .welcome-text::after {
+                content: '';
+                position: absolute;
+                bottom: -10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100px;
+                height: 2px;
+                background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            }
+            .navbar-toggler {
+                border-color: #d4af37;
+            }
+            .navbar-toggler-icon {
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23d4af37' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+            }
+            .content-wrapper {
+                min-height: 60vh;
+                padding: 2rem 0;
+            }
+        </style>
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" href="{% url 'AS' %}">
+                    <img src="{% static 'images/Tusita.png' %}" style="height:40px; width:auto;">
+                    <span class="ms-3 fs-1 fw-bold welcome-text">ยินดีต้อนรับ</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'index' %}">หน้าหลัก</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about' %}">เกี่ยวกับเรา</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'gallery' %}">อัลบั้มรูป</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+        <div class="case-file shadow-lg rounded-4 p-5 position-relative" style="background: rgba(30,30,40,0.97); border: 2px solid #d4af37; max-width: 700px; margin: 40px auto 0 auto;">
+            <div class="bullet-hole" style="top: 30px; left: 30px;"></div>
+            <div class="bullet-hole" style="bottom: 30px; right: 30px;"></div>
+            <div class="mafia-seal"></div>
+            <div class="profile-section mb-4">
+                <div class="profile-image mb-3">
+                   <img src="https://i.postimg.cc/B6SV19h5/455698611-1598174560747358-2403844972973550863-n.jpg" alt="Tusita Profile" class="profile-pic border border-warning border-4 shadow" style="width: 220px; height: 220px; object-fit: cover; background: #222;">
+                </div>
+                <h1 class="golden-glow profile-name mb-2" style="font-size:3.2em; letter-spacing:2px;">TUSITA</h1>
+                <div class="birth-info mb-2" style="font-size:1.4em; color:#ffd700;">เกิดวันที่ 27 01 2548</div>
+                <div class="social-info d-flex justify-content-center gap-3 flex-wrap">
+                    <div class="social-link bg-dark bg-opacity-50 border border-warning rounded-pill px-4 py-2 shadow-sm">📘 FB: Tusita Shindai</div>
+                    <div class="social-link bg-dark bg-opacity-50 border border-warning rounded-pill px-4 py-2 shadow-sm">📷 IG: Tusita Shindai</div>
+                    <div class="social-link bg-dark bg-opacity-50 border border-warning rounded-pill px-4 py-2 shadow-sm">🎵 TikTok: Tusita</div>
+                </div>
+            </div>
+            <div class="case-number typewriter mb-4" style="font-size:1.3em; color:#d4af37; border-bottom:2px dashed #ffd700; padding-bottom:10px;">CASE FILE #2025-001: โครงการ TUSITA SHINDAI</div>
+            <div class="case-details text-start" style="color:#f5e6c8; font-size:1.15em;">
+                <p><strong style="color:#ffd700;">🕵️ นักสืบรับผิดชอบ:</strong> Detective Django "The Shadow"</p>
+                <p><strong style="color:#ffd700;">📅 วันที่เปิดคดี:</strong> มิถุนายน 2025</p>
+                <p><strong style="color:#ffd700;">🎯 ภารกิจ:</strong> ตามหาความจริงเบื้องหลังการตายที่ลึกลับของครอบครัว</p>
+                <p><strong style="color:#ffd700;">🏛️ องค์กรที่เกี่ยวข้อง:</strong> ครอบครัว Tusita - กลุ่มอิทธิพลใต้ดิน</p>
+                <div class="evidence-list mt-3 mb-3 p-3 rounded-3 border border-warning bg-dark bg-opacity-25 shadow-sm" style="font-style:italic;">
+                    <strong style="color:#ffd700;">🔍 หลักฐานที่พบ:</strong><br>
+                    • มีการเข้ารหัสข้อมูลแบบลับสุดยอด เช่นเดียวกับที่มาเฟียใช้<br>
+                    • พบร่องรอยการใช้อาวุธระดับมืออาชีพในการปิดปาก<br>
+                    • มีการปกปิดตัวตนของเจ้าพ่ออย่างชาญฉลาด<br>
+                    • พบเอกสารการโอนเงินจำนวนมหาศาลผ่านธนาคารในต่างประเทศ
+                </div>
+                <p><strong style="color:#ffd700;">📊 สถานะคดี:</strong> <span class="status-urgent">เร่งด่วน - อันตรายสูงสุด</span></p>
+                <p><strong style="color:#ffd700;">🎪 ระดับความเสี่ยง:</strong> ⚡⚡⚡⚡⚡ (OMERTÀ LEVEL)</p>
+                <p><strong style="color:#ffd700;">💰 มูลค่าที่เกี่ยวข้อง:</strong> $50,000,000+</p>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
